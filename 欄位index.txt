@@ -1,0 +1,90 @@
+Txn Initiation Date
+Txn Input Amount
+Txn Output Amount
+Txn Input Address
+Txn Output Address
+Txn Fees
+Mempool Count
+Mempool Final Txn Date
+Txn State
+Txn Verification Date
+Block Height
+Txn Input Details
+Txn Output Details
+Miner Verification Time
+Dust Bool
+Block Hash
+Block Validator
+Block Date
+Block Txn Count
+Block Txn Amount
+Block Size
+Miner Reward
+Block Txn Fees
+Block Merkle Root Hash
+Block Miner Hash
+Block Difficulty
+Block Nonce
+Block Confirm
+
+
+
+transaction['Txn Hash']
+transaction['Txn Initiation Date']
+transaction['Txn Input Amount']
+transaction['Txn Output Amount']
+transaction['Txn Input Address']
+transaction['Txn Output Address']
+transaction['Txn Fees']
+transaction['Mempool Count']
+transaction['Mempool Final Txn Date']
+transaction['Txn State']
+transaction['Txn Verification Date']
+transaction['Block Height']
+transaction['Txn Input Details']
+transaction['Txn Output Details']
+transaction['Miner Verification Time']
+transaction['Dust Bool']
+transaction['Block Hash']
+transaction['Block Validator']
+transaction['Block Date']
+transaction['Block Txn Count']
+transaction['Block Txn Amount']
+transaction['Block Size']
+transaction['Miner Reward']
+transaction['Block Txn Fees']
+transaction['Block Merkle Root Hash']
+transaction['Block Miner Hash']
+transaction['Block Difficulty']
+transaction['Block Nonce']
+transaction['Block Confirm']
+
+TxnHash
+TxnInitiationDate
+TxnInputAmount
+TxnOutputAmount
+TxnInputAddress
+TxnOutputAddress
+TxnFees
+MempoolCount
+MempoolFinalTxnDate
+TxnState
+TxnVerificationDate
+BlockHeight
+TxnInputDetails
+TxnOutputDetails
+MinerVerificationTime
+DustBool
+BlockHash
+BlockValidator
+BlockDate
+BlockTxnCount
+BlockTxnAmount
+BlockSize
+MinerReward
+BlockTxnFees
+BlockMerkleRootHash
+BlockMinerHash
+BlockDifficulty
+BlockNonce
+BlockConfirm

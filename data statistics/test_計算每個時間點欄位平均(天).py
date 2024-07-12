@@ -19,7 +19,7 @@ def parse_datetime(datetime_str):
 
 # 設定最大字段大小以避免字段錯誤
 csv.field_size_limit(2147483647)
-csv_file_path = 'test'
+csv_file_path = '2024_01_18-2024_01_24 - 資料集'
 
 # 字典用於保存每小時的計數和總和
 hourly_data = {hour: {'count': 0, 'sum': 0.0} for hour in range(24)}
@@ -34,21 +34,37 @@ for root, dirs, files in os.walk(csv_file_path):
             reader = csv.reader(infile)
             next(reader)  # 跳過標題
             for row in reader:
-                date = parse_datetime(row[1])
-                hour = date.hour
-                value = float(row[29])
-                hourly_data[hour]['count'] += 1
-                hourly_data[hour]['sum'] += value
+                if row[15] == '0':
+                    date = parse_datetime(row[1])
+                    hour = date.hour
+                    value = float(row[5])
+                    hourly_data[hour]['count'] += 1
+                    hourly_data[hour]['sum'] += value
 
-# 打印每小時的平均值
+target_hours = [7,8,9,10,11,12,13,14,15,16,20,21]
+total_count = 0
+total_sum = 0
+
 for hour in range(24):
     count = hourly_data[hour]['count']
     sum_value = hourly_data[hour]['sum']
-    if count > 0:
-        average = sum_value / count
-    else:
-        average = 0
-    print(f"{average:.5f}")
+    
+    print(f'hour: {hour}')
+    print(f'count: {count}')
+    print(f'sum: {sum_value}')
+    print('------------------------------')
+    
+    if hour in target_hours:
+        total_count += count
+        total_sum += sum_value
 
-print('--------------------')
-print('總計:', sum(hourly_data[hour]['count'] for hour in range(24)))
+if total_count > 0:
+    average = total_sum / total_count
+else:
+    average = 0
+
+print('Txn Output Address')
+print(f'Target hours: {target_hours}')
+print(f'Total count: {total_count}')
+print(f'Total sum: {total_sum}')
+print(f'Average: {average:.8f}')

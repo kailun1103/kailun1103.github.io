@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 csv.field_size_limit(2147483647)
 
-csv_file_path = '2024_01_18-2024_01_24 - 資料集'
+csv_file_path = 'test'
 
 data = []
 
@@ -15,17 +15,20 @@ for root, dirs, files in os.walk(csv_file_path):
     for csv_file in csv_files:
         # time.sleep(0.5)
         csv_path = os.path.join(root, csv_file)
-
-        with open(csv_path, mode='r', newline='', encoding='utf-8') as infile:
+        data = []
+        with open(csv_path, newline='', encoding='utf-8') as infile:
             print(csv_file)
-            reader = csv.reader(infile)
-            header = next(reader)
+            json_file = csv_file.replace('.csv','')
+            reader = csv.DictReader(infile)
             count = 0
             for row in reader:
+                data.append(row)
                 count += 1
 
- 
+            with open(f'{json_file}.json', 'w', encoding='utf-8') as json_file:
+                json.dump(data, json_file, ensure_ascii=False, indent=4)
             total += count
 
 
 print(total)
+

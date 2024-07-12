@@ -70,16 +70,11 @@ def get_final_date(btc_driver_last):
 
 
     
-def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_driver_four, btc_driver_five, btc_driver_six, btc_driver_seven, btc_driver_eight, btc_driver_last, hashes_seen, header_written):
+def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_driver_last, hashes_seen, header_written):
     try:
         BTC_soup_1 = BeautifulSoup(btc_driver_first.page_source, 'html.parser')
         BTC_soup_2 = BeautifulSoup(btc_driver_second.page_source, 'html.parser')
         BTC_soup_3 = BeautifulSoup(btc_driver_third.page_source, 'html.parser')
-        BTC_soup_4 = BeautifulSoup(btc_driver_four.page_source, 'html.parser')
-        BTC_soup_5 = BeautifulSoup(btc_driver_five.page_source, 'html.parser')
-        BTC_soup_6 = BeautifulSoup(btc_driver_six.page_source, 'html.parser')
-        BTC_soup_7 = BeautifulSoup(btc_driver_seven.page_source, 'html.parser')
-        BTC_soup_8 = BeautifulSoup(btc_driver_eight.page_source, 'html.parser')
 
         BTC_rows_1 = BTC_soup_1.select('tr')
         BTC_data_to_write_1 = []
@@ -87,16 +82,6 @@ def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_drive
         BTC_data_to_write_2 = []
         BTC_rows_3 = BTC_soup_3.select('tr')
         BTC_data_to_write_3 = []
-        BTC_rows_4 = BTC_soup_4.select('tr')
-        BTC_data_to_write_4 = []
-        BTC_rows_5 = BTC_soup_5.select('tr')
-        BTC_data_to_write_5 = []
-        BTC_rows_6 = BTC_soup_6.select('tr')
-        BTC_data_to_write_6 = []
-        BTC_rows_7 = BTC_soup_7.select('tr')
-        BTC_data_to_write_7 = []
-        BTC_rows_8 = BTC_soup_8.select('tr')
-        BTC_data_to_write_8 = []
 
         btc_pending_txn_count = int(BTC_soup_1.find(class_='font-size-sm responsive-label nowrap secondary-text').text.replace("The total Number of ","").replace(" Txns","").replace(",",""))
 
@@ -187,143 +172,6 @@ def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_drive
 
                     BTC_data_to_write_3.append([system_time, txn_hash_3, txn_time_3, inputsVolume_amt_3, outputsVolume_amt_3, inputsCount_amt_3, outputsCount_amt_3, fees_amt_3, btc_pending_txn_count, BTC_final_date])
 
-        # driver_4迭代處理網頁每一行
-        for row in BTC_rows_4:
-            txn_link_4 = row.select_one('td:nth-of-type(1) a') 
-            if txn_link_4:
-                txn_hash_4 = txn_link_4.get('href').split('/')[-1]
-                if txn_hash_4 not in hashes_seen: 
-                    hashes_seen.append(txn_hash_4)
-                    txn_time_4 = row.select_one('td:nth-of-type(2) div').text
-                    inputsVolume_4 = row.select_one('td:nth-of-type(3)')
-                    outputsVolume_4 = row.select_one('td:nth-of-type(4)')
-                    fees_4 = row.select_one('td:nth-of-type(6)')
-                    inputsVolume_amt_4 = 0
-                    inputsCount_amt_4 = 0
-                    if inputsVolume_4:
-                        inputsVolume_amt_4 = float(inputsVolume_4.text.split()[0])
-                        inputsCount_amt_4 = int(inputsVolume_4.text.split()[1].replace('(',''))
-                    outputsVolume_amt_4 = 0
-                    outputsCount_amt_4 = 0
-                    if outputsVolume_4:
-                        outputsVolume_amt_4 = float(outputsVolume_4.text.split()[0])
-                        outputsCount_amt_4 = int(outputsVolume_4.text.split()[1].replace('(',''))
-                    fees_amt_4 = 0
-                    if fees_4:
-                        fees_amt_4 = float(fees_4.text.split()[0])
-                    
-                    BTC_data_to_write_4.append([system_time, txn_hash_4, txn_time_4, inputsVolume_amt_4, outputsVolume_amt_4, inputsCount_amt_4, outputsCount_amt_4, fees_amt_4, btc_pending_txn_count, BTC_final_date])
-
-
-        # driver_5迭代處理網頁每一行
-        for row in BTC_rows_5:
-            txn_link_5 = row.select_one('td:nth-of-type(1) a') # 從表格行中選擇特定的資料欄位
-            if txn_link_5:
-                txn_hash_5 = txn_link_5.get('href').split('/')[-1]
-                if txn_hash_5 not in hashes_seen: # 利用deque排除重複的交易
-                    hashes_seen.append(txn_hash_5)
-                    txn_time_5 = row.select_one('td:nth-of-type(2) div').text
-                    inputsVolume_5 = row.select_one('td:nth-of-type(3)')
-                    outputsVolume_5 = row.select_one('td:nth-of-type(4)')
-                    fees_5 = row.select_one('td:nth-of-type(6)')
-                    inputsVolume_amt_5 = 0
-                    inputsCount_amt_5 = 0
-                    if inputsVolume_5:
-                        inputsVolume_amt_5 = float(inputsVolume_5.text.split()[0])
-                        inputsCount_amt_5 = int(inputsVolume_5.text.split()[1].replace('(',''))
-                    outputsVolume_amt_5 = 0
-                    outputsCount_amt_5 = 0
-                    if outputsVolume_5:
-                        outputsVolume_amt_5 = float(outputsVolume_5.text.split()[0])
-                        outputsCount_amt_5 = int(outputsVolume_5.text.split()[1].replace('(',''))
-                    fees_amt_5 = 0
-                    if fees_5:
-                        fees_amt_5 = float(fees_5.text.split()[0])
-
-                    BTC_data_to_write_5.append([system_time, txn_hash_5, txn_time_5, inputsVolume_amt_5, outputsVolume_amt_5, inputsCount_amt_5, outputsCount_amt_5, fees_amt_5, btc_pending_txn_count, BTC_final_date])
-
-        # driver_6迭代處理網頁每一行
-        for row in BTC_rows_6:
-            txn_link_6 = row.select_one('td:nth-of-type(1) a') 
-            if txn_link_6:
-                txn_hash_6 = txn_link_6.get('href').split('/')[-1]
-                if txn_hash_6 not in hashes_seen: 
-                    hashes_seen.append(txn_hash_6)
-                    txn_time_6 = row.select_one('td:nth-of-type(2) div').text
-                    inputsVolume_6 = row.select_one('td:nth-of-type(3)')
-                    outputsVolume_6 = row.select_one('td:nth-of-type(4)')
-                    fees_6 = row.select_one('td:nth-of-type(6)')
-                    inputsVolume_amt_6 = 0
-                    inputsCount_amt_6 = 0
-                    if inputsVolume_6:
-                        inputsVolume_amt_6 = float(inputsVolume_6.text.split()[0])
-                        inputsCount_amt_6 = int(inputsVolume_6.text.split()[1].replace('(',''))
-                    outputsVolume_amt_6 = 0
-                    outputsCount_amt_6 = 0
-                    if outputsVolume_6:
-                        outputsVolume_amt_6 = float(outputsVolume_6.text.split()[0])
-                        outputsCount_amt_6 = int(outputsVolume_6.text.split()[1].replace('(',''))
-                    fees_amt_6 = 0
-                    if fees_6:
-                        fees_amt_6 = float(fees_6.text.split()[0])
-                    
-                    BTC_data_to_write_6.append([system_time, txn_hash_6, txn_time_6, inputsVolume_amt_6, outputsVolume_amt_6, inputsCount_amt_6, outputsCount_amt_6, fees_amt_6, btc_pending_txn_count, BTC_final_date])
-
-
-        # driver_7迭代處理網頁每一行
-        for row in BTC_rows_7:
-            txn_link_7 = row.select_one('td:nth-of-type(1) a') # 從表格行中選擇特定的資料欄位
-            if txn_link_7:
-                txn_hash_7 = txn_link_7.get('href').split('/')[-1]
-                if txn_hash_7 not in hashes_seen: # 利用deque排除重複的交易
-                    hashes_seen.append(txn_hash_7)
-                    txn_time_7 = row.select_one('td:nth-of-type(2) div').text
-                    inputsVolume_7 = row.select_one('td:nth-of-type(3)')
-                    outputsVolume_7 = row.select_one('td:nth-of-type(4)')
-                    fees_7 = row.select_one('td:nth-of-type(6)')
-                    inputsVolume_amt_7 = 0
-                    inputsCount_amt_7 = 0
-                    if inputsVolume_7:
-                        inputsVolume_amt_7 = float(inputsVolume_7.text.split()[0])
-                        inputsCount_amt_7 = int(inputsVolume_7.text.split()[1].replace('(',''))
-                    outputsVolume_amt_7 = 0
-                    outputsCount_amt_7 = 0
-                    if outputsVolume_7:
-                        outputsVolume_amt_7 = float(outputsVolume_7.text.split()[0])
-                        outputsCount_amt_7 = int(outputsVolume_7.text.split()[1].replace('(',''))
-                    fees_amt_7 = 0
-                    if fees_7:
-                        fees_amt_7 = float(fees_7.text.split()[0])
-
-                    BTC_data_to_write_7.append([system_time, txn_hash_7, txn_time_7, inputsVolume_amt_7, outputsVolume_amt_7, inputsCount_amt_7, outputsCount_amt_7, fees_amt_7, btc_pending_txn_count, BTC_final_date])
-
-        # driver_8迭代處理網頁每一行
-        for row in BTC_rows_8:
-            txn_link_8 = row.select_one('td:nth-of-type(1) a') 
-            if txn_link_8:
-                txn_hash_8 = txn_link_8.get('href').split('/')[-1]
-                if txn_hash_8 not in hashes_seen: 
-                    hashes_seen.append(txn_hash_8)
-                    txn_time_8 = row.select_one('td:nth-of-type(2) div').text
-                    inputsVolume_8 = row.select_one('td:nth-of-type(3)')
-                    outputsVolume_8 = row.select_one('td:nth-of-type(4)')
-                    fees_8 = row.select_one('td:nth-of-type(6)')
-                    inputsVolume_amt_8 = 0
-                    inputsCount_amt_8 = 0
-                    if inputsVolume_8:
-                        inputsVolume_amt_8 = float(inputsVolume_8.text.split()[0])
-                        inputsCount_amt_8 = int(inputsVolume_8.text.split()[1].replace('(',''))
-                    outputsVolume_amt_8 = 0
-                    outputsCount_amt_8 = 0
-                    if outputsVolume_8:
-                        outputsVolume_amt_8 = float(outputsVolume_8.text.split()[0])
-                        outputsCount_amt_8 = int(outputsVolume_8.text.split()[1].replace('(',''))
-                    fees_amt_8 = 0
-                    if fees_8:
-                        fees_amt_8 = float(fees_8.text.split()[0])
-
-                    BTC_data_to_write_8.append([system_time, txn_hash_8, txn_time_8, inputsVolume_amt_8, outputsVolume_amt_8, inputsCount_amt_8, outputsCount_amt_8, fees_amt_8, btc_pending_txn_count, BTC_final_date])
-
         if BTC_data_to_write_1:
             with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
@@ -351,60 +199,17 @@ def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_drive
                 csv_writer.writerows(BTC_data_to_write_3)
             print(f"- 本次driver_3抓取了 {len(BTC_data_to_write_3)} 條交易")
 
-        if BTC_data_to_write_4:
-            with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                if not header_written:
-                    csv_writer.writerow(["System Time", "Txn Hash","Txn Date", "Input Volume", "Output Volume", "Input Count", "Output Count", "Fees", "Total Txn Amount", "Final Txn Date"])
-                    header_written = True
-                csv_writer.writerows(BTC_data_to_write_4)
-            print(f"- 本次driver_4抓取了 {len(BTC_data_to_write_4)} 條交易")
-
-
-        if BTC_data_to_write_5:
-            with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                if not header_written:
-                    csv_writer.writerow(["System Time", "Txn Hash","Txn Date", "Input Volume", "Output Volume", "Input Count", "Output Count", "Fees", "Total Txn Amount", "Final Txn Date"])
-                    header_written = True
-                csv_writer.writerows(BTC_data_to_write_5)
-            print(f"- 本次driver_5抓取了 {len(BTC_data_to_write_5)} 條交易")
-
-        if BTC_data_to_write_6:
-            with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                if not header_written:
-                    csv_writer.writerow(["System Time", "Txn Hash","Txn Date", "Input Volume", "Output Volume", "Input Count", "Output Count", "Fees", "Total Txn Amount", "Final Txn Date"])
-                    header_written = True
-                csv_writer.writerows(BTC_data_to_write_6)
-            print(f"- 本次driver_6抓取了 {len(BTC_data_to_write_6)} 條交易")
-
-
-        if BTC_data_to_write_7:
-            with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                if not header_written:
-                    csv_writer.writerow(["System Time", "Txn Hash","Txn Date", "Input Volume", "Output Volume", "Input Count", "Output Count", "Fees", "Total Txn Amount", "Final Txn Date"])
-                    header_written = True
-                csv_writer.writerows(BTC_data_to_write_7)
-            print(f"- 本次driver_7抓取了 {len(BTC_data_to_write_7)} 條交易")
-
-        if BTC_data_to_write_8:
-            with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile:
-                csv_writer = csv.writer(csvfile)
-                if not header_written:
-                    csv_writer.writerow(["System Time", "Txn Hash","Txn Date", "Input Volume", "Output Volume", "Input Count", "Output Count", "Fees", "Total Txn Amount", "Final Txn Date"])
-                    header_written = True
-                csv_writer.writerows(BTC_data_to_write_8)
-            print(f"- 本次driver_8抓取了 {len(BTC_data_to_write_8)} 條交易")
-
-        this_time_rows = len(BTC_data_to_write_1) + len(BTC_data_to_write_2) + len(BTC_data_to_write_3) + len(BTC_data_to_write_4) + len(BTC_data_to_write_5) + len(BTC_data_to_write_6) + len(BTC_data_to_write_7) + len(BTC_data_to_write_8) # 追蹤總行數
+        this_time_rows = len(BTC_data_to_write_1) + len(BTC_data_to_write_2) + len(BTC_data_to_write_3) # 追蹤總行數
 
         if this_time_rows != 0:
-            print(f"BTC八個視窗抓取了 {this_time_rows} 條交易")
-            print(f"BTC總交易數量為 {btc_pending_txn_count} 條交易")
-            print(f'BTC目前時間為: {system_time}')
-            print("----------------------------------------")
+            output = f"""
+            BTC三個視窗抓取了 {this_time_rows} 條交易
+            BTC總交易數量為 {btc_pending_txn_count} 條交易
+            BTC目前時間為: {system_time}
+            ----------------------------------------"""
+            print(output)
+            with open("btc_transactions.txt", "w", encoding="utf-8") as f:
+                f.write(output)
     
     except Exception as ex:
         print(f"Failed reason: {ex}")
@@ -415,182 +220,64 @@ def btc_crawler(btc_driver_first, btc_driver_second, btc_driver_third, btc_drive
 
 
 if __name__ == '__main__':
+    chrome_service = Service('chromedriver.exe')
 
-    #---- selenium參數設定 ----*
-    btc_driver_first = webdriver.Chrome() # btc_driver_first 抓取 btc.com第一頁交易資訊
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+
+    btc_driver_first = webdriver.Chrome(service=chrome_service, options=chrome_options) # btc_driver_first 抓取 btc.com第一頁交易資訊
     btc_driver_first.get('https://explorer.btc.com/btc/unconfirmed-txs')
     btc_driver_first.execute_script("window.scrollTo(0, document.body.scrollHeight);") # 滑到最底下
-    # try: # 點擊一次顯示100頁選項
-    #     page_opthon = WebDriverWait(btc_driver_first, 20).until(
-    #         EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
-    #     )
-    #     page_opthon.click()
-    #     show_100 = WebDriverWait(btc_driver_first, 20).until(
-    #         EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
-    #     )
-    #     show_100.click() 
-    # except Exception as ex:
-    #     print(f"btc_driver_first hit error: {ex}")
+    page_opthon = WebDriverWait(btc_driver_first, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
+    )
+    page_opthon.click()
+    show_100 = WebDriverWait(btc_driver_first, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
+    )
+    show_100.click() 
     time.sleep(2)
 
-
-    btc_driver_second = webdriver.Chrome() # btc_driver_second 抓取 btc.com第二頁交易資訊
+    btc_driver_second = webdriver.Chrome(service=chrome_service, options=chrome_options) # btc_driver_second 抓取 btc.com第二頁交易資訊
     btc_driver_second.get('https://explorer.btc.com/btc/unconfirmed-txs')
     btc_driver_second.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    try:
-        # 點擊一次顯示100頁
-        # page_opthon = WebDriverWait(btc_driver_second, 20).until(
-        #     EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
-        # )
-        # page_opthon.click()
-        # show_100 = WebDriverWait(btc_driver_second, 20).until(
-        #     EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
-        # )
-        # show_100.click() 
-        # btc_driver_second.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        page_2 = WebDriverWait(btc_driver_second, 20).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[3]/button'))
-        )
-        page_2.click() 
-    except Exception as ex:
-        print(f"btc_driver_second hit error: {ex}")
+    # 點擊一次顯示100頁
+    page_opthon = WebDriverWait(btc_driver_second, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
+    )
+    page_opthon.click()
+    show_100 = WebDriverWait(btc_driver_second, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
+    )
+    show_100.click() 
+    btc_driver_second.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    page_2 = WebDriverWait(btc_driver_second, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[3]/button'))
+    )
+    page_2.click() 
     time.sleep(2)
 
 
-    btc_driver_third = webdriver.Chrome() # btc_driver_second 抓取 btc.com第三頁交易資訊
+    btc_driver_third = webdriver.Chrome(service=chrome_service, options=chrome_options) # btc_driver_second 抓取 btc.com第三頁交易資訊
     btc_driver_third.get('https://explorer.btc.com/btc/unconfirmed-txs')
     btc_driver_third.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
+    page_opthon = WebDriverWait(btc_driver_third, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
+    )
+    page_opthon.click()
+    show_100 = WebDriverWait(btc_driver_third, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
+    )
+    show_100.click() 
     page_3 = WebDriverWait(btc_driver_third, 20).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[4]/button'))
     )
     page_3.click() 
     time.sleep(2)
 
-    btc_driver_four = webdriver.Chrome() # btc_driver_second 抓取 btc.com第四頁交易資訊
-    btc_driver_four.get('https://explorer.btc.com/btc/unconfirmed-txs')
-    btc_driver_four.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_4 = WebDriverWait(btc_driver_four, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[5]/button'))
-    )
-    page_4.click() 
-    time.sleep(2)
-
-    btc_driver_five = webdriver.Chrome() # btc_driver_second 抓取 btc.com第五頁交易資訊
-    btc_driver_five.get('https://explorer.btc.com/btc/unconfirmed-txs')
-    btc_driver_five.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_5 = WebDriverWait(btc_driver_five, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[5]/button'))
-    )
-    page_5.click()
-    btc_driver_five.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    time.sleep(2)
-    page_5 = WebDriverWait(btc_driver_five, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_5.click() 
-    time.sleep(2)
-
-    btc_driver_six = webdriver.Chrome() # btc_driver_second 抓取 btc.com第六頁交易資訊
-    btc_driver_six.get('https://explorer.btc.com/btc/unconfirmed-txs')
-    btc_driver_six.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_6 = WebDriverWait(btc_driver_six, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[5]/button'))
-    )
-    page_6.click()
-    time.sleep(2)
-    btc_driver_six.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    page_6 = WebDriverWait(btc_driver_six, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_6.click()
-    btc_driver_six.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    page_6 = WebDriverWait(btc_driver_six, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_6.click() 
-    time.sleep(2)
-
-    btc_driver_seven = webdriver.Chrome() # btc_driver_second 抓取 btc.com第七頁交易資訊
-    btc_driver_seven.get('https://explorer.btc.com/btc/unconfirmed-txs')
-    btc_driver_seven.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_7 = WebDriverWait(btc_driver_seven, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[5]/button'))
-    )
-    page_7.click()
-    time.sleep(2)
-    btc_driver_seven.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_7 = WebDriverWait(btc_driver_seven, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_7.click()
-    time.sleep(2)
-    btc_driver_seven.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_7 = WebDriverWait(btc_driver_seven, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_7.click() 
-    time.sleep(2)
-    btc_driver_seven.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_7 = WebDriverWait(btc_driver_seven, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_7.click() 
-    time.sleep(2)
-
-    btc_driver_eight = webdriver.Chrome() # btc_driver_second 抓取 btc.com第八頁交易資訊
-    btc_driver_eight.get('https://explorer.btc.com/btc/unconfirmed-txs')
-    btc_driver_eight.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_8 = WebDriverWait(btc_driver_eight, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[5]/button'))
-    )
-    page_8.click()
-    time.sleep(2)
-    btc_driver_eight.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_8 = WebDriverWait(btc_driver_eight, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_8.click()
-    time.sleep(2)
-    btc_driver_eight.execute_script("window.scrollTo(0, document.body.scrollHeight);")  
-    page_8 = WebDriverWait(btc_driver_eight, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_8.click()
-    time.sleep(2)
-    btc_driver_eight.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_8 = WebDriverWait(btc_driver_eight, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_8.click()
-    time.sleep(2)
-    btc_driver_eight.execute_script("window.scrollTo(0, document.body.scrollHeight);") 
-    page_8 = WebDriverWait(btc_driver_eight, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[6]/button'))
-    )
-    page_8.click()
-    time.sleep(2)
-
-    btc_driver_last = webdriver.Chrome()
+    btc_driver_last = webdriver.Chrome(service=chrome_service, options=chrome_options)
     btc_driver_last.get('https://explorer.btc.com/btc/unconfirmed-txs')
     btc_driver_last.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    page_last = WebDriverWait(btc_driver_second, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/li[8]/button'))
-    )
-    page_last.click() 
-    time.sleep(2)
-    # try:
-    #     一次顯示100頁
-    #     page_opthon = WebDriverWait(btc_driver_last, 20).until(
-    #         EC.presence_of_element_located((By.XPATH, '//*[@id="__next"]/div[1]/div[2]/div[5]/nav/div'))
-    #     )
-    #     page_opthon.click()
-    #     show_100 = WebDriverWait(btc_driver_last, 20).until(
-    #         EC.presence_of_element_located((By.XPATH, '//*[@id="btccom-ui-dropdown"]/div/div/div[4]'))
-    #     )
-    #     show_100.click() 
-    # except Exception as ex:
-    #     print(f"btc_driver_last hit error: {ex}")
-
 
 
     # ------------開始爬蟲程序------------
@@ -604,7 +291,7 @@ if __name__ == '__main__':
 
     while True:
         today_date = datetime.today().strftime('%Y_%m_%d')
-        csv_file_name = f"BTX_Transaction_data_{today_date}_{count + 1}.csv"
+        csv_file_name = f"test/BTX_Transaction_data_{today_date}_{count + 1}.csv"
         
         with open(csv_file_name, 'a', newline='', encoding='utf-8') as csvfile: # 'a' 代表 "append" 模式
             csv_writer = csv.writer(csvfile)
@@ -618,7 +305,7 @@ if __name__ == '__main__':
             while time.time() < timer:
                 try:
                     # 使用ThreadPoolExecutor來執行爬蟲函式，一次用五個pipeline去抓資料
-                    executor.submit(btc_crawler, btc_driver_first, btc_driver_second, btc_driver_third, btc_driver_four, btc_driver_five, btc_driver_six, btc_driver_seven, btc_driver_eight, btc_driver_last, hashes_seen, header_written).result()
+                    executor.submit(btc_crawler, btc_driver_first, btc_driver_second, btc_driver_third, btc_driver_last, hashes_seen, header_written).result()
                 except Exception as ex:
                     print(f"Error in threading: {ex}")
 

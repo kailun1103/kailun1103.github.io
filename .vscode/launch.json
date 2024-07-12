@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Python: test1.py",
+        "name": "Python: test9.py",
         "type": "python",
         "request": "launch",
-        "program": "${workspaceFolder}/test1.py",
+        "program": "${workspaceFolder}/test9.py",
         "args": [
         ],
         "console": "integratedTerminal",
