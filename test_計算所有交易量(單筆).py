@@ -13,7 +13,8 @@ for root, dirs, files in os.walk(json_file_path):
             json_data = json.load(infile)
             count = 0
             for item in json_data:
-                count +=1
+                if item['Dust Bool'] == '1':
+                    count +=1
             total += count
 
 print(total)

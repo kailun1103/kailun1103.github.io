@@ -8,7 +8,7 @@ def process_file(json_path):
         json_data = json.load(infile)
         count = 0
         for item in json_data:
-            output_details = json.loads(item['Txn Input Details'])
+            output_details = json.loads(item['Txn Output Details'])
             for detail in output_details:
                 # if float(detail['amount']) <= 0.00000546:
                 #     count += 1
@@ -16,7 +16,7 @@ def process_file(json_path):
     return count
 
 if __name__ == '__main__':
-    json_file_path = 'layer_count'
+    json_file_path = '0619-0811/0619-0723'
 
     all_json_files = []
     for root, dirs, files in os.walk(json_file_path):

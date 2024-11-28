@@ -3,15 +3,17 @@ import json
 import time
 from concurrent.futures import ProcessPoolExecutor
 
-def count_dust_bool(json_path):
+def count_txn(json_path):
     with open(json_path, 'r', encoding='utf-8') as infile:
-        print(infile)
         json_data = json.load(infile)
-        return sum(1 for item in json_data if float(item['Txn Output Amount']) <= 0.00000546)
-        # return sum(1 for item in json_data if item['Dust Bool'] == '1')
+        count = 0
+        for item in json_data:
+            # print(item['Txn Output Details'])
+            count += 1
+        return count
 
 def main():
-    json_file_path = '0619-0811/0619-0723'
+    json_file_path = 'test'
     # json_file_path = 'dataset'
     start_time = time.time()
 
@@ -21,7 +23,7 @@ def main():
 
     total = 0
     with ProcessPoolExecutor() as executor:
-        results = executor.map(count_dust_bool, json_files)
+        results = executor.map(count_txn, json_files)
         total = sum(results)
 
     end_time = time.time()

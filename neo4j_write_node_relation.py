@@ -10,8 +10,10 @@ def create_subgraph(txn_hash, Txn_Input_Details, Txn_Output_Details, address_cac
 
     # Create Transaction node
     txn_node = Node("Transaction", 
-            TxnHash=txn_hash,  
-            TxnInputAmount=transaction['Txn Input Amount'], 
+            TxnHash=txn_hash,
+            # TxnInitiationDate=transaction['Txn Initiation Date'], 
+            TxnVerificationDate=transaction['Txn Verification Date'], 
+            TxnInputAmount=transaction['Txn Input Amount'],
             TxnOutputAmount=transaction['Txn Output Amount'], 
             TxnInputAddress=transaction['Txn Input Address'], 
             TxnOutputAddress=transaction['Txn Output Address'], 
@@ -26,10 +28,9 @@ def create_subgraph(txn_hash, Txn_Input_Details, Txn_Output_Details, address_cac
     # Create input Address nodes and SENT relationships using cache
     for inp in Txn_Input_Details:
         input_address = inp['inputHash']
-        # input_dust = inp['dust_bool']
+        input_cluster = inp.get('cluster', 'Unknown')
         if input_address not in address_cache:
-            # address_node = Node("Address", address=input_address, DustBool=input_dust)
-            address_node = Node("Address", address=input_address)
+            address_node = Node("Address", address=input_address, Cluster=input_cluster)
             address_cache[input_address] = address_node
         else:
             address_node = address_cache[input_address]
@@ -41,10 +42,10 @@ def create_subgraph(txn_hash, Txn_Input_Details, Txn_Output_Details, address_cac
     # Create output Address nodes and RECEIVED relationships using cache
     for out in Txn_Output_Details:
         output_address = out['outputHash']
-        # output_dust = out['dust_bool']
+        output_cluster = out.get('cluster', 'Unknown')
         if output_address not in address_cache:
-            # address_node = Node("Address", address=output_address, DustBool=output_dust)
-            address_node = Node("Address", address=output_address)
+            address_node = Node("Address", address=output_address, Cluster=output_cluster)
+            # address_node = Node("Address", address=output_address)
             address_cache[output_address] = address_node
         else:
             address_node = address_cache[output_address]
@@ -94,12 +95,12 @@ def save_address_cache(address_cache, output_dir, addresses_per_file=100000):
 if __name__ == '__main__':
     URI = "bolt://localhost:7687"
     AUTH = ("kailun1103", "00000000")
-    DATABASE = "gcn3"  # Specify your database name here
+    DATABASE = "GCN"  # Specify your database name here
     address_cache = {}
 
     start_time = time.time()
 
-    json_file_path = 'layer_count/multi'
+    json_file_path = 'test'
     file_total = sum(len(files) for _, _, files in os.walk(json_file_path) if any(file.endswith('.json') for file in files))
     file_counter = 1
     for root, dirs, files in os.walk(json_file_path):

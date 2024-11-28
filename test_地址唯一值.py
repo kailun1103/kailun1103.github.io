@@ -6,7 +6,7 @@ def get_unique_addresses(input_file, output_file):
         data = json.load(f)
 
     # 使用集合來去除重複地址
-    unique_addresses = list({item['address']: item for item in data}.values())
+    unique_addresses = list({item['Txn Hash']: item for item in data}.values())
 
     # 將結果寫入新的 JSON 文件
     with open(output_file, 'w') as f:
@@ -16,12 +16,10 @@ def get_unique_addresses(input_file, output_file):
     return unique_addresses
 
 # 使用示例
-input_file = 'dust_addresses.json'
-output_file = 'unique_dust_addresses.json'
+input_file = 'merged_result.json'
+output_file = 'txn_merged_result_sampled.json'
 
 unique_addresses = get_unique_addresses(input_file, output_file)
 
 # 打印結果
-print("獨立地址列表：")
-for address in unique_addresses:
-    print(address['address'])
+print(len(unique_addresses))

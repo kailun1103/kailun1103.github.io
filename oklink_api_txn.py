@@ -6,10 +6,11 @@ headers = {
 }
 payload = {
     "chainShortName": "btc",
-    "txid": "86d953aea7460c4e40582dc64a5852669deb5797b5552651c86752dc821571fe"
+    "txid": "07d69a1e8a19b6632dc79c2cfbf064d7f7b204ae80ee089a9bd505028c6a6161"
 }
 
 response = requests.get("https://www.oklink.com/api/v5/explorer/transaction/transaction-fills", headers=headers, params=payload)
 response_data = response.json()  # 将响应数据解析为 JSON 格式
 print(response_data)
+# print(response_data['data'][0]['txfee'])
     
